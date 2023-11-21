@@ -32,11 +32,11 @@ int device_close(struct inode *inode, struct file *filep) {
     return 0;
 }
 
-static void drxpd_vma_open(struct vm_area_struct *vma) {
+static void vma_open(struct vm_area_struct *vma) {
     printk(KERN_INFO "simple_device: VMA Open\n");
 }
 
-static void drxpd_vma_close(struct vm_area_struct *vma) {
+static void vma_close(struct vm_area_struct *vma) {
     // DMA unregister
     if (dma_buf){
             dma_free_coherent(simple_device, size, dma_buf, dma_handle);}
@@ -48,8 +48,8 @@ static void drxpd_vma_close(struct vm_area_struct *vma) {
 }
 
 static struct vm_operations_struct drxpd_vm_ops = {
-    .open = drxpd_vma_open,
-    .close = drxpd_vma_close,
+    .open = vma_open,
+    .close = vma_close,
 };
 
 
