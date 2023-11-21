@@ -19,6 +19,7 @@ make
 ```
 Now run the binary and check the kernel output on /var/log/messages
 ```
+./userland_test
 tail /var/log/messages
 ```
 You should see something like this
