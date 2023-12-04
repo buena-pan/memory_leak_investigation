@@ -14,7 +14,7 @@ int main() {
 	//int fd = open(filename.c_str(), O_RDWR);
 	//char* pointer_to_mmap_zone = (char*)(mmap(nullptr, file_size, PROT_READ | PROT_WRITE , MAP_SHARED, fd, 0));
 	char* pointer_to_mmap_zone = (char*)(mmap(nullptr, file_size, PROT_READ , MAP_PRIVATE, fd, 0));
-	cudaError_t registerStatus = cudaHostRegister(pointer_to_mmap_zone,file_size,  cudaHostRegisterPortable | cudaHostRegisterReadOnly );
+	cudaError_t registerStatus = cudaHostRegister(pointer_to_mmap_zone,file_size,  cudaHostRegisterDefault );
 	cudaError_t unregisterStatus = cudaHostUnregister(pointer_to_mmap_zone); //cudaHostRegister+0x1cd in CUDA shared library
 	munmap(pointer_to_mmap_zone, file_size);
 	close(fd);
