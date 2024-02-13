@@ -1,5 +1,10 @@
 # memory_leak_investigation
-Analizing memory leak in RHEL 8,5 after cudaHostRegister/cudaHostUnregister on custom DMA device that implements dma_alloc_coherent, remap_pfn_range
+Analizing memory leak in RHEL 8,5 after cudaHostRegister/cudaHostUnregister on custom DMA device that implements dma_alloc_coherent, remap_pfn_rang.
+
+## Some preliminar conclusions
+pin_user_pages/unpin_user_pages is a method introduced in kernels >5.6, based on top of get_user_pages. It should increase/decrease the reference counter for each pinned page in 2<<20, this ensures that the pages will not be page out by simple releases (like put_pages)
+The possible problem happens when CUDA driver installer test the presence of unpin_user_pages in the kernel, if is there it will set it as default releasing method, even when the kernel may not be using this method (for example, in a pathched kernel). 
+This bug could be reproduce on any env that have a kernel version <5.6 based on the old get_user_pages, that lately was upgraded including pin_user_pages.
 
 ## How to reproduce the issue
 Clone the repo 
